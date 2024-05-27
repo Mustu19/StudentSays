@@ -1,7 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../store/Auth.jsx";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+  const { storeTokenInLS, API } = useAuth();
+
+  // let handle the input field value
+  const handleInput = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    setUser({
+      ...user,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(user);
+
+    try {
+      const response = await fetch(`${API}/api/auth/signin/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+      });
+
+      console.log("login form", response);
+      const res_data = await response.json();
+      if (response.ok) {
+        // alert("Login Successful");
+        storeTokenInLS(res_data.token);
+        setUser({
+          email: "",
+          password: "",
+        });
+        toast.success("Login successfull");
+        navigate("/");
+      } else {
+        toast.error(
+          res_data.extraDetails ? res_data.extraDetails : res_data.message
+        );
+        console.log("invalid credential");
+      }
+    } catch (error) {
+      console.log("login" + error);
+    }
+  };
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -31,7 +85,7 @@ const SignIn = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" onSubmit={handleSubmit} method="POST">
           <div>
             <label
               htmlFor="email"
@@ -42,8 +96,10 @@ const SignIn = () => {
             <div className="mt-2">
               <input
                 id="email"
+                type="text"
                 name="email"
-                type="email"
+                value={user.email}
+                onChange={handleInput}
                 autoComplete="email"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
@@ -71,8 +127,10 @@ const SignIn = () => {
             <div className="mt-2">
               <input
                 id="password"
-                name="password"
                 type="password"
+                name="password"
+                value={user.password}
+                onChange={handleInput}
                 autoComplete="current-password"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"

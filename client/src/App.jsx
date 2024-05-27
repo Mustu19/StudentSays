@@ -1,16 +1,18 @@
 import React from "react";
 import Navbar from "./components/Layout/Navbar";
-import Home from "./components/Home";
-import TermsAndConditions from "./components/TermsAndConditions";
+import Home from "./components/pages/Home";
+import TermsAndConditions from "./components/pages/TermsAndConditions";
 import Footer from "./components/Layout/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Privacy from "./components/Privacy";
-import PageNotFound from "./components/NotFound";
+import Privacy from "./components/pages/Privacy";
+import PageNotFound from "./components/pages/NotFound";
 import Loading from "./components/Layout/Loading";
-import About from "./components/About";
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
-import Predict from "./components/Predict";
+import About from "./components/pages/About";
+import SignIn from "./components/pages/SignIn";
+import SignUp from "./components/pages/SignUp";
+// import Predict from "./components/pages/Predict";
+import LogOut from "./components/pages/LogOut";
+import AddCollege from "./components/pages/AddCollege";
 
 const App = () => {
   return (
@@ -24,7 +26,9 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/predict" element={<Predict />} />
+          <Route path="/logout" element={<LogOut />} />
+          <Route path="/addCollege" element={<AddCollege />} />
+          {/* <Route path="/predict" element={<Predict />} /> */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />

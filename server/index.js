@@ -2,9 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { errorMiddleware } from "./middleware/error.js";
+import errorMiddleware from "./middleware/errorMiddleware.js";
 import connectDb from "./database/db.js";
-// import userRoutes from "./routes/userRoutes.js"
+import authRoute from "./routes/authRoute.js";
+import otpRouter from "./routes/otpRoute.js"
+import collegeRoute from "./routes/collegeRoute.js";
 
 const app = express();
 dotenv.config();
@@ -12,19 +14,22 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({
-  origin: [process.env.FRONTEND_URL],
-  methods: ['GET', 'POST', 'DELETE', 'PUT'],
-  credentials: true
-}));
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
+  credentials: true,
+};
 
+
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // route
-// app.use("/api/auth", router);
-
+app.use("/api/auth", authRoute);
+app.use("/api/colleges", collegeRoute);
+app.use('/otp', otpRouter);
 
 app.use(errorMiddleware);
 // Start the server

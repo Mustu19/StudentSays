@@ -1,12 +1,13 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+import authController from "../controller/authController.js";
+import validate from "../middleware/validateMiddleware.js";
+import { signupSchema , signinSchema } from "../validator/authValidator.js";
+import {authMiddleware} from "../middleware/authMiddleware.js";
+const router = Router();
 
-router.route("/").get((req, res) => { 
-  res.status(200).send("Welcome to Student Voice");
-});
+router.route("/").get(authController.home);
+router.route("/signup").post(validate(signupSchema) , authController.signup);
+router.route("/signin").post(validate(signinSchema), authController.signin);
+router.route("/user").get(authMiddleware, authController.user);
 
-router.route("/register").get((req, res) => {
-  res.status(200).json({ msg: "registration successful from router" });
-});
-
-module.exports = router;
+export default router;
