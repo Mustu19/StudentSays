@@ -12,7 +12,12 @@ import SignIn from "./components/pages/SignIn";
 import SignUp from "./components/pages/SignUp";
 // import Predict from "./components/pages/Predict";
 import LogOut from "./components/pages/LogOut";
-import AddCollege from "./components/pages/AddCollege";
+import AddCollege from "./components/Admin/AddCollege";
+import ProtectedRoute from "./components/Admin/ProtectedRoute";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import ManageColleges from "./components/Admin/ManageColleges";
+import ManageUsers from "./components/Admin/ManageUsers";
+import EditCollege from "./components/Admin/EditCollege";
 
 const App = () => {
   return (
@@ -27,7 +32,11 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/logout" element={<LogOut />} />
-          <Route path="/addCollege" element={<AddCollege />} />
+          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/addCollege" element={<ProtectedRoute><AddCollege /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute><ManageUsers /></ProtectedRoute>} />
+          <Route path="/admin/colleges" element={<ProtectedRoute><ManageColleges /></ProtectedRoute>} />
+          <Route path="/admin/colleges/:collegeId/edit" element={<ProtectedRoute><EditCollege /></ProtectedRoute>} />
           {/* <Route path="/predict" element={<Predict />} /> */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>

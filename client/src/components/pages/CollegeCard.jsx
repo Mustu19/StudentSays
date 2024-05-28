@@ -5,8 +5,9 @@ const CollegeCard = ({ college }) => {
     <div className="xl:w-1/3 md:w-1/2 p-4">
       <div className="border border-gray-200 p-6 rounded-lg">
         <div className="flex items-center mb-4">
+          {console.log(college.logo)}
           <img
-            src={college.logo}
+            src={`http://localhost:5000${college.logo}`}
             alt={college.name}
             className="w-10 h-10 mr-4"
           />

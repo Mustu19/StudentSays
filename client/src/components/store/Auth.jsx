@@ -49,6 +49,28 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchCollegeById = async (collegeId) => {
+    try {
+      const response = await fetch(`${API}/api/admin/colleges/${collegeId}/edit`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authorizationToken,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        console.error("Failed to fetch college");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (token) {
       userAuthentication();
@@ -67,6 +89,7 @@ export const AuthProvider = ({ children }) => {
         authorizationToken,
         isLoading,
         API,
+        fetchCollegeById,
       }}
     >
       {children}

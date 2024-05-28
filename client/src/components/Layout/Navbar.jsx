@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../store/Auth";
 
 const Navbar = () => {
-  const { isLoggedIn, user, isLoading, LogoutUser } = useAuth();
+  const { isLoggedIn, user, isLoading} = useAuth();
   const [colleges, setColleges] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -95,10 +95,10 @@ const Navbar = () => {
 
         {user.isAdmin && (
           <Link
-            to="/addCollege"
+            to="/admin"
             className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
           >
-            Add College
+            Admin
           </Link>
         )}
 

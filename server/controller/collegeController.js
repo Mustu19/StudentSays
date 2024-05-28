@@ -1,21 +1,5 @@
 import { College } from "../models/collegeModel.js";
 
-const addCollege = async (req, res, next) => {
-  try {
-    const { name, logo, description, website } = req.body;
-    const collegeExist = await College.findOne({ name: name });
-
-    if (collegeExist) {
-      return res.status(400).json({ msg: "College already exists" });
-    }
-    const college = await College.create({ name, logo, description, website });
-
-    res.status(201).json(college);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const getCollege = async (req, res, next) => {
   try {
     const colleges = await College.find();
@@ -37,4 +21,4 @@ const getCollegeById = async (req, res, next) => {
   }
 };
 
-export default {addCollege, getCollege, getCollegeById}
+export default {getCollege, getCollegeById}

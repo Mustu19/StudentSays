@@ -5,8 +5,9 @@ import cookieParser from "cookie-parser";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 import connectDb from "./database/db.js";
 import authRoute from "./routes/authRoute.js";
-import otpRouter from "./routes/otpRoute.js"
+// import otpRouter from "./routes/otpRoute.js"
 import collegeRoute from "./routes/collegeRoute.js";
+import adminRoute from "./routes/adminRoute.js";
 
 const app = express();
 dotenv.config();
@@ -20,7 +21,7 @@ const corsOptions = {
   credentials: true,
 };
 
-
+app.use('/uploads', express.static('uploads'));
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
@@ -29,7 +30,8 @@ app.use(express.urlencoded({ extended: true }));
 // route
 app.use("/api/auth", authRoute);
 app.use("/api/colleges", collegeRoute);
-app.use('/otp', otpRouter);
+app.use("/api/admin", adminRoute);
+// app.use('/otp', otpRouter);
 
 app.use(errorMiddleware);
 // Start the server
