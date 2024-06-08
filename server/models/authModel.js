@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import { Review } from "./reviewModel.js";
+import { College } from "./collegeModel.js";
 
 // Define the User schema
 const userSchema = new mongoose.Schema({
@@ -26,11 +28,32 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre("save", async function () {
-  const user = this;
-  console.log("actual data ", this);
+// Pre-deleteOne hook to delete reviews and update college references
+userSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    try {
+      const reviews = await Review.find({ user: this._id });
 
-  if (!user.isModified) {
+      for (const review of reviews) {
+        await College.updateOne(
+          { _id: review.college },
+          { $pull: { reviews: review._id } }
+        );
+        await Review.deleteMany({ user: this._id });
+      }
+
+      next();
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+userSchema.pre("save", async function (next) {
+  const user = this;
+  if (!user.isModified("password")) {
     return next();
   }
 
@@ -38,11 +61,11 @@ userSchema.pre("save", async function () {
     const saltRound = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(user.password, saltRound);
     user.password = hashedPassword;
+    next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 });
-
 
 // comparePassword
 userSchema.methods.comparePassword = async function (password) {
@@ -51,7 +74,6 @@ userSchema.methods.comparePassword = async function (password) {
 
 // JSON WEB TOKEN
 userSchema.methods.generateToken = async function () {
-  console.log("I am token");
   try {
     return jwt.sign(
       {
@@ -69,5 +91,5 @@ userSchema.methods.generateToken = async function () {
   }
 };
 
-// define the model or the collection name
-export const User = new mongoose.model("USER", userSchema);
+// Define the model or the collection name
+export const User = mongoose.model("User", userSchema);

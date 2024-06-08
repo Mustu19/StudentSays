@@ -154,6 +154,8 @@ const SignUp = () => {
                 value={user.username}
                 onChange={handleInput}
                 required
+                pattern="^[A-Za-z]+ [A-Za-z]+$"
+                title="Full Name should be in the format 'Firstname Lastname'"
                 className="block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
               />
             </div>
@@ -176,6 +178,8 @@ const SignUp = () => {
                 onChange={handleInput}
                 autoComplete="email"
                 required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                title="Email should be in the format 'example@gmail.com'"
                 className="block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
               />
             </div>
@@ -225,6 +229,8 @@ const SignUp = () => {
                 onChange={handleInput}
                 autoComplete="new-password"
                 required
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                title="Password must be at least 8 characters long, and include an uppercase letter, a lowercase letter, a number, and a special character."
                 className="block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
               />
             </div>
@@ -247,6 +253,8 @@ const SignUp = () => {
                 onChange={handleInput}
                 autoComplete="new-password"
                 required
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                title="Password must be at least 8 characters long, and include an uppercase letter, a lowercase letter, a number, and a special character."
                 className="block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
               />
             </div>
@@ -256,7 +264,7 @@ const SignUp = () => {
           <div>
             <button
               type="button"
-              // onClick={getotp}
+              onClick={getotp}
               className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
             >
               Get OTP

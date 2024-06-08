@@ -32,7 +32,7 @@ router.delete(
 );
 router.post(
   "/colleges/addCollege",
-  upload.single('logo'),
+  upload.single("logo"),
   authMiddleware,
   adminMiddleware,
   adminController.addCollege
@@ -45,6 +45,7 @@ router.get(
 );
 router.put(
   "/colleges/:id/edit",
+  upload.single("logo"),
   authMiddleware,
   adminMiddleware,
   adminController.updateCollege

@@ -8,6 +8,7 @@ import authRoute from "./routes/authRoute.js";
 // import otpRouter from "./routes/otpRoute.js"
 import collegeRoute from "./routes/collegeRoute.js";
 import adminRoute from "./routes/adminRoute.js";
+import reviewRoute from "./routes/reviewRoute.js";
 
 const app = express();
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoute);
 app.use("/api/colleges", collegeRoute);
 app.use("/api/admin", adminRoute);
+app.use("/api/reviews", reviewRoute);
 // app.use('/otp', otpRouter);
 
 app.use(errorMiddleware);

@@ -6,6 +6,8 @@ const collegeSchema = new mongoose.Schema(
     logo: { type: String, required: true },
     description: { type: String, required: true },
     website: { type: String, required: true },
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+    averageRating: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

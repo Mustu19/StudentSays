@@ -18,6 +18,8 @@ import AdminDashboard from "./components/Admin/AdminDashboard";
 import ManageColleges from "./components/Admin/ManageColleges";
 import ManageUsers from "./components/Admin/ManageUsers";
 import EditCollege from "./components/Admin/EditCollege";
+import CollegeDetails from "./components/pages/CollegeDetails";
+import ReviewForm from "./components/pages/ReviewForm"
 
 const App = () => {
   return (
@@ -39,6 +41,8 @@ const App = () => {
           <Route path="/admin/colleges/:collegeId/edit" element={<ProtectedRoute><EditCollege /></ProtectedRoute>} />
           {/* <Route path="/predict" element={<Predict />} /> */}
           <Route path="*" element={<PageNotFound />} />
+          <Route path="/colleges/:id" element={<CollegeDetails />} />
+          <Route path="/reviewForm/:id" element={<ReviewForm />} />
         </Routes>
         <Footer />
       </div>

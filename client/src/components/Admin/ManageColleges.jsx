@@ -36,24 +36,36 @@ const ManageColleges = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold my-4">Manage Colleges</h1>
-      <table>
+      <table className="border-collapse border border-gray-400">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Logo</th>
-            <th>Description</th>
-            <th>Website</th>
-            <th>Action</th>
+            <th className="border border-gray-400 px-4 py-2">Name</th>
+            <th className="border border-gray-400 px-4 py-2">Logo</th>
+            <th className="border border-gray-400 px-4 py-2">Description</th>
+            <th className="border border-gray-400 px-4 py-2">Website</th>
+            <th className="border border-gray-400 px-4 py-2">Action</th>
           </tr>
         </thead>
         <tbody>
           {colleges.map((college) => (
             <tr key={college._id}>
-              <td>{college.name}</td>
-              <td>{college.logo}</td>
-              <td>{college.description}</td>
-              <td>{college.website}</td>
-              <td className="flex">
+              <td className="border border-gray-400 px-4 py-2">
+                {college.name}
+              </td>
+              <td className="border border-gray-400 px-4 py-2">
+                <img
+                  src={`http://localhost:5000${college.logo}`}
+                  alt={college.name}
+                  className="w-10 h-10 mr-4"
+                />
+              </td>
+              <td className="border border-gray-400 px-4 py-2">
+                {college.description}
+              </td>
+              <td className="border border-gray-400 px-4 py-2">
+                {college.website}
+              </td>
+              <td className="border border-gray-400 px-4 py-2 flex">
                 <DeleteCollege
                   collegeId={college._id}
                   onDelete={handleDelete}

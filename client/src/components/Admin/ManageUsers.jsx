@@ -35,20 +35,22 @@ const ManageUsers = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold my-4">Manage Users</h1>
-      <table>
+      <table className="border-collapse border border-gray-400">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Action</th>
+            <th className="border border-gray-400 px-4 py-2">Name</th>
+            <th className="border border-gray-400 px-4 py-2">Email</th>
+            <th className="border border-gray-400 px-4 py-2">Action</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user._id}>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>
+              <td className="border border-gray-400 px-4 py-2">
+                {user.username}
+              </td>
+              <td className="border border-gray-400 px-4 py-2">{user.email}</td>
+              <td className="border border-gray-400 px-4 py-2">
                 <DeleteUser userId={user._id} onDelete={handleDelete} />
               </td>
             </tr>
