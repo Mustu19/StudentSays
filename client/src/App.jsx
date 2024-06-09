@@ -20,6 +20,8 @@ import ManageUsers from "./components/Admin/ManageUsers";
 import EditCollege from "./components/Admin/EditCollege";
 import CollegeDetails from "./components/pages/CollegeDetails";
 import ReviewForm from "./components/pages/ReviewForm"
+import ForgotPassword from "./components/pages/ForgotPassword";
+import ResetPassword from "./components/pages/ResetPassword";
 
 const App = () => {
   return (
@@ -34,6 +36,8 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/logout" element={<LogOut />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/addCollege" element={<ProtectedRoute><AddCollege /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute><ManageUsers /></ProtectedRoute>} />

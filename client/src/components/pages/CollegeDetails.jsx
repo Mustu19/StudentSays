@@ -81,7 +81,16 @@ const CollegeDetails = () => {
           <h2 className="text-4xl font-bold text-gray-900 mb-2">
             {college.name}
           </h2>
-          <h4 className="text-2xl text-gray-700 mb-4">{college.description}</h4>
+          <h4 className="text-lg text-gray-700 mb-4">{college.description}</h4>
+          <h5 className="text-xl text-blue-500 mb-4">
+            <a
+              href={`https://${college.website}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit College Website
+            </a>
+          </h5>
           <div className="flex flex-col text-xl text-gray-600">
             <span className="mb-2">
               Rating: {college.averageRating.toFixed(2)}

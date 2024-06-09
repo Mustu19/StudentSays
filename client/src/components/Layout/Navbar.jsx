@@ -1,41 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../store/Auth";
 
 const Navbar = () => {
-  const { isLoggedIn, user, isLoading} = useAuth();
-  const [colleges, setColleges] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  useEffect(() => {
-    const fetchColleges = async () => {
-      try {
-        const response = await fetch("/colleges.txt");
-        const text = await response.text();
-        const collegeList = text.split("\n").map((college) => college.trim());
-        setColleges(collegeList);
-      } catch (error) {
-        console.error("Error fetching colleges:", error);
-      }
-    };
-
-    fetchColleges();
-  }, []);
-
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    setShowDropdown(value.length > 0);
-  };
-
-  const filteredColleges = colleges.filter((college) =>
-    college.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const { isLoggedIn, user } = useAuth();
 
   return (
     <header className="sticky text-gray-600 body-font">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-center">
+      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
         <Link
           to="/"
           className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
@@ -58,65 +30,34 @@ const Navbar = () => {
               fill="rgba(0, 255, 0, 0.7)"
             />
           </svg>
-
           <span className="ml-3 text-xl">StudentSays</span>
         </Link>
-        <div className="md:flex-grow flex items-center justify-center relative">
-          <input
-            type="text"
-            placeholder="Search Your College"
-            className="mr-5 py-1 px-3 border border-gray-300 rounded focus:outline-none focus:border-green-500"
-            value={searchTerm}
-            onChange={handleInputChange}
-            onFocus={() => setShowDropdown(searchTerm.length > 0)}
-            list="colleges-list"
-          />
-          {showDropdown && (
-            <datalist
-              id="colleges-list"
-              className="absolute z-10 dropdown rounded overflow-hidden shadow-md border border-gray-300 bg-green-100"
+
+        <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
+          {user.isAdmin && (
+            <Link
+              to="/admin"
+              className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
             >
-              {filteredColleges.map((college, index) => (
-                <option
-                  key={index}
-                  value={college}
-                  className="py-2 px-3 bg-green-300 hover:bg-green-400 cursor-pointer"
-                />
-              ))}
-            </datalist>
+              Admin
+            </Link>
           )}
-        </div>
-        {/* <Link
-          to="/predict"
-          className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
-        >
-          Predict College and Rank
-        </Link> */}
-
-        {user.isAdmin && (
-          <Link
-            to="/admin"
-            className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
-          >
-            Admin
-          </Link>
-        )}
-
-        {isLoggedIn ? (
-          <Link
-            to="/logout"
-            className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
-          >
-            Logout
-          </Link>
-        ) : (
-          <Link
-            to="/signin"
-            className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
-          >
-            Sign In
-          </Link>
-        )}
+          {isLoggedIn ? (
+            <Link
+              to="/logout"
+              className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
+            >
+              Logout
+            </Link>
+          ) : (
+            <Link
+              to="/signin"
+              className="inline-flex items-center bg-green-500 border-0 py-1 px-3 mr-5 focus:outline-none hover:bg-green-400 rounded text-white mt-4 md:mt-0"
+            >
+              Sign In
+            </Link>
+          )}
+        </nav>
       </div>
     </header>
   );

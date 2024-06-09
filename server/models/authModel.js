@@ -1,31 +1,19 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { Review } from "./reviewModel.js";
 import { College } from "./collegeModel.js";
 
 // Define the User schema
 const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  state: { type: String, required: true },
+  password: { type: String, required: true },
+  isAdmin: { type: Boolean, default: false },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: String },
 });
 
 // Pre-deleteOne hook to delete reviews and update college references
@@ -89,6 +77,19 @@ userSchema.methods.generateToken = async function () {
   } catch (error) {
     console.error("Token Error: ", error);
   }
+};
+
+// Generate Password Reset Token
+userSchema.methods.generatePasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(20).toString("hex");
+
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+  this.resetPasswordExpires = Date.now() + 15 * 60 * 1000 ;
+
+  return resetToken;
 };
 
 // Define the model or the collection name

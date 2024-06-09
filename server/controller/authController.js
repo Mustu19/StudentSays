@@ -1,4 +1,6 @@
 import { User } from "../models/authModel.js";
+import { sendResetPasswordEmail } from "../utils/email.js";
+import crypto from "crypto";
 
 const home = async (req, res) => {
   try {
@@ -63,10 +65,7 @@ const signin = async (req, res) => {
   }
 };
 
-// *-------------------
 // User Logic
-// *-------------------
-
 const user = async (req, res) => {
   try {
     // const userData = await User.find({});
@@ -78,4 +77,55 @@ const user = async (req, res) => {
   }
 };
 
-export default { home, signup, signin, user};
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const resetToken = await user.generatePasswordResetToken();
+    await user.save();
+
+    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+    await sendResetPasswordEmail(user.email, resetUrl);
+
+    res.status(200).json({ message: "Reset password email sent" });
+  } catch (error) {
+    console.error("Error sending reset password email:", error);
+    res.status(500).json({ message: "Failed to send reset password email" });
+  }
+};
+
+// Reset Password
+const resetPassword = async (req, res) => {
+  const { resetToken } = req.params;
+  const { newPassword } = req.body;
+
+  // resetPasswordToken = crypto
+  //   .createHash("sha256")
+  //   .update(resetToken)
+  //   .digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken: resetToken,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("Invalid or expired reset token");
+  }
+
+  user.password = newPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  res.json({ message: "Password reset successful" });
+};
+
+export default { home, signup, signin, user, forgotPassword, resetPassword };

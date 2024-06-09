@@ -2,6 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const CollegeCard = ({ college }) => {
+  const getTruncatedDescription = (description) => {
+    const words = description.split(" ");
+    return words.length > 15
+      ? words.slice(0, 15).join(" ") + "..."
+      : description;
+  };
+
   return (
     <div className="xl:w-1/3 md:w-1/2 p-4">
       <Link to={`/colleges/${college._id}`}>
@@ -16,7 +23,9 @@ const CollegeCard = ({ college }) => {
               {college.name}
             </h2>
           </div>
-          <p className="leading-relaxed text-base">{college.description}</p>
+          <p className="leading-relaxed text-base">
+            {getTruncatedDescription(college.description)}
+          </p>
           <div className="flex justify-between items-center mt-4">
             <span className="text-gray-600">
               Rating: {college.averageRating}
